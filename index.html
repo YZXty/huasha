@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>洒水</title>
+</head>
+<style>
+    div{
+        margin: 0 auto;
+    }
+    canvas{
+        background: #ccc;
+        margin: 0 auto;
+    }
+</style>
+<script>
+    window.onload=function () {
+        var canvas=document.getElementsByTagName("canvas")[0];
+        var div=document.getElementsByTagName("div")[0];
+        var cobj=canvas.getContext("2d");
+        var cw=canvas.width;
+        var ch=canvas.height;
+        var arr=[];
+        div.style.width=cw+"px";
+        div.style.height=ch+"px";
+        setInterval(function () {
+            cobj.clearRect(0,0,cw,ch);
+            var cobj1=new lizi();
+            arr.push(cobj1);
+            for(var i=0;i<arr.length;i++){
+                arr[i].draw();
+                arr[i].update();
+                if(arr[i].r<0){
+                    arr[i]=new lizi();
+                    arr[i].x=cobj1.x;
+                    arr[i].y=cobj1.y;
+                }
+            }
+        },60)
+        function lizi() {
+            this.x=100;
+            this.y=150;
+            this.r=2+6*Math.random();
+            this.color="rgb(233,233,233)";
+            this.speedx=6+2*Math.random();
+            this.speedy=-3*Math.random()-2;
+            this.zhongli=0.3;
+            this.speed2=0.1;
+        }
+        lizi.prototype={
+            draw: function () {
+                cobj.save();
+                cobj.translate(this.x,this.y);
+                cobj.beginPath();
+                cobj.fillStyle=this.color;
+                cobj.arc(0,0,this.r,0,Math.PI*2,true);
+                cobj.fill();
+                cobj.restore()
+            },
+            update: function(){
+                this.speedy+=this.zhongli;
+                this.x+=this.speedx;
+                this.y+=this.speedy;
+                this.r-=this.speed2;
+            }
+        }
+    }
+</script>
+<body>
+<div>
+    <canvas width="600" height="400"></canvas>
+</div>
+
+</body>
+</html>
